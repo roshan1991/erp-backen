@@ -10,12 +10,13 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8 # 8 days
     
     # Database
-    POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER", "localhost")
-    POSTGRES_PORT: str = os.getenv("POSTGRES_PORT", "5432")
-    POSTGRES_USER: str = os.getenv("POSTGRES_USER", "postgres")
-    POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD", "password")
-    POSTGRES_DB: str = os.getenv("POSTGRES_DB", "erp_db")
-    SQLALCHEMY_DATABASE_URI: str | None = None
+    MYSQL_SERVER: str = os.getenv("MYSQL_SERVER", "127.0.0.1")
+    MYSQL_PORT: str = os.getenv("MYSQL_PORT", "3306")
+    MYSQL_USER: str = os.getenv("MYSQL_USER", "root")
+    MYSQL_PASSWORD: str = os.getenv("MYSQL_PASSWORD", "SysAdmin@123")
+    MYSQL_DB: str = os.getenv("MYSQL_DB", "erp_db")
+    
+    SQLALCHEMY_DATABASE_URI: str | None = ""
     
     # Daraz API
     DARAZ_APP_KEY: str = os.getenv("DARAZ_APP_KEY", "")
@@ -47,9 +48,9 @@ class Settings(BaseSettings):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if not self.SQLALCHEMY_DATABASE_URI:
-            encoded_user = quote_plus(self.POSTGRES_USER)
-            encoded_password = quote_plus(self.POSTGRES_PASSWORD)
-            self.SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{encoded_user}:{encoded_password}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+            encoded_user = quote_plus(self.MYSQL_USER)
+            encoded_password = quote_plus(self.MYSQL_PASSWORD)
+            self.SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{encoded_user}:{encoded_password}@{self.MYSQL_SERVER}:{self.MYSQL_PORT}/{self.MYSQL_DB}"
 
     class Config:
         case_sensitive = True

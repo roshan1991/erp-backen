@@ -2,11 +2,14 @@ fastapi
 uvicorn
 sqlalchemy
 alembic
-psycopg2-binary
-pydantic
+pydantic[email]
 pydantic-settings
 python-dotenv
 python-multipart
-pyjwt
+python-jose[cryptography]
 passlib[bcrypt]
 gunicorn
+
+requests
+pymysql
+httpx

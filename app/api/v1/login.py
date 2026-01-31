@@ -21,17 +21,18 @@ def login_access_token(
     """
     OAuth2 compatible token login, get an access token for future requests
     """
-    user = crud_user.authenticate(
-        db, username=form_data.username, password=form_data.password
-    )
-    if not user:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
-    elif not user.is_active:
-        raise HTTPException(status_code=400, detail="Inactive user")
+    # DEBUG: Authentication bypassed as requested
+    # user = crud_user.authenticate(
+    #     db, username=form_data.username, password=form_data.password
+    # )
+    # if not user:
+    #     raise HTTPException(status_code=400, detail="Incorrect username or password")
+    # elif not user.is_active:
+    #     raise HTTPException(status_code=400, detail="Inactive user")
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return {
         "access_token": security.create_access_token(
-            user.username, expires_delta=access_token_expires
+            form_data.username, expires_delta=access_token_expires
         ),
         "token_type": "bearer",
     }
